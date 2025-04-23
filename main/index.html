@@ -1,0 +1,131 @@
+<p><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmonic 投资代理案例</title>
+  </p>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .article { margin-bottom: 40px; }
+    .title { font-size: 24px; margin-bottom: 10px; }
+    .content { line-height: 1.6; }
+  </style>
+<p></head>
+<body>
+        <div class="article">
+      <h3>Catch production failures early with LangSmith Alerts</h3>
+      <a href=https://blog.langchain.dev/langsmith-alerts/>Read more</a>
+      <p># LangSmith Alerts：提前捕获生产故障</p>
+<p>可靠的应用程序是优质用户体验的基础，而提前捕获故障则是关键。LangSmith 推出了 <strong>Alerts</strong> 功能，帮助开发者实时监控 LLM 应用和代理的运行状况。目前支持基于 <strong>错误率</strong>、<strong>运行延迟</strong> 和 <strong>反馈评分</strong> 设置告警。</p>
+<h3 id="">为什么主动监控很重要？</h3>
+<p>LLM 应用面临两大挑战：</p>
+<ol>
+<li><strong>对外部服务的依赖</strong>：模型提供商、API、数据库等依赖的中断或延迟会显著影响体验。</li>
+<li><strong>输出质量与正确性</strong>：LLM 输出可能因提示、输入或模型变化而不稳定，用户反馈和在线评估可提供早期预警。</li>
+</ol>
+<h3 id="langsmith">LangSmith 告警功能概述</h3>
+<p>支持以下指标的告警：</p>
+<ul>
+<li>错误数量和比例</li>
+<li>平均延迟</li>
+<li>平均反馈评分</li>
+</ul>
+<p>可通过筛选器（如模型类型、工具调用）聚焦特定运行子集，并设置时间窗口（5 或 15 分钟）和阈值。告警可通过 PagerDuty 或自定义 Webhook（如 Slack）集成到工作流中。</p>
+<h3 id="-1">未来计划</h3>
+<ul>
+<li>支持更多告警类型（如运行计数、Token 使用量）</li>
+<li>相对值变化告警（如延迟激增 25%）</li>
+<li>自定义时间窗口</li>
+</ul>
+<p>立即通过 <a href="https://docs.smith.langchain.com/observability/how_to_guides/alerts?ref=blog.langchain.dev">文档</a> 开始使用！反馈可通过 <a href="https://langchaincommunity.slack.com/?ref=blog.langchain.dev">LangChain Slack 社区</a> 提交。</p>
+    </div>
+        <div class="article">
+      <h3>How Trellix cut log parsing time from days to minutes with LangGraph Studio and LangSmith</h3>
+      <a href=https://blog.langchain.dev/customers-trellix/>Read more</a>
+      <p># Trellix 使用 LangGraph 和 LangSmith 提升日志解析效率</p>
+<p>Trellix 是一家领先的网络安全公司，通过开发内部应用 Sidekick，显著提升了客户请求处理效率。Sidekick 利用 <strong>LangGraph</strong> 和 <strong>LangSmith</strong> 自动化日志解析和插件开发任务。</p>
+<h2 id="-2">问题与解决方案</h2>
+<ul>
+<li><strong>问题</strong>：客户请求积压严重，日志解析耗时 2-3 天，导致客户体验差。</li>
+<li><strong>解决方案</strong>：通过 LangGraph 构建模块化工作流，Sidekick 将日志解析时间从 <strong>数天缩短到分钟级</strong>，并加速了插件开发。</li>
+</ul>
+<h2 id="-3">技术优势</h2>
+<ul>
+<li><strong>LangGraph</strong> 提供低级工具和抽象能力，支持子图调用和模块化设计。</li>
+<li><strong>LangGraph Studio</strong> 可视化工作流，帮助技术与非技术利益相关者理解 AI 推理过程。</li>
+<li><strong>LangSmith</strong> 用于实验、性能监控和调试，提升数据驱动决策能力。</li>
+</ul>
+<h2 id="-4">成果与未来计划</h2>
+<ul>
+<li><strong>成果</strong>：</li>
+<li>日志解析时间大幅减少，工程师效率提高。</li>
+<li>客户请求积压减少，满意度提升。</li>
+<li>AI 性能优化，利益相关者信心增强。</li>
+<li><strong>未来计划</strong>：将 Sidekick 扩展至外部合作伙伴，并推广自动化解析和云连接器功能。</li>
+</ul>
+<h2 id="-5">结论</h2>
+<p>Trellix 借助 LangGraph 和 LangSmith 成功应对网络安全挑战，推动 AI 驱动的解决方案创新，为未来发展奠定基础。</p>
+    </div>
+        <div class="article">
+      <h3>How to think about agent frameworks</h3>
+      <a href=https://blog.langchain.dev/how-to-think-about-agent-frameworks/>Read more</a>
+      <p># 总结：如何思考Agent框架</p>
+<p>构建可靠的Agent系统的核心难点在于确保LLM（大语言模型）在每一步都能获得适当的情境信息。这包括精确控制输入LLM的内容，以及运行适当的步骤生成相关上下文。</p>
+<h2 id="-6">核心观点</h2>
+<ol>
+<li><p><strong>Agent系统的复杂性</strong><br />
+Agent系统既包含工作流（Workflows），也包含Agent本身，实际生产中的系统通常是两者的结合。</p></li>
+<li><p><strong>Agent抽象的局限性</strong><br />
+大多数Agent框架只是提供了一组Agent抽象，虽然易于上手，但往往会掩盖LLM上下文管理的细节，导致可靠性下降。</p></li>
+<li><p><strong>LangGraph的特点</strong><br />
+LangGraph是一个兼具声明式和命令式API的编排框架，支持Agent抽象，并提供了诸如短期记忆、长期记忆、人类参与、流式处理等功能。</p></li>
+<li><p><strong>框架的价值</strong><br />
+框架不仅提供Agent抽象，还应解决生产环境中的实际问题，如容错、调试、可观测性等。并非所有场景都需要复杂的Agent，简单的工具调用循环可能已经足够。</p></li>
+<li><p><strong>未来趋势</strong><br />
+随着模型能力的提升，某些任务可能仅需简单的工具调用循环即可完成，但对于大多数企业级应用，定制化的Agent平台仍然是必要的。</p></li>
+</ol>
+<h2 id="openai">OpenAI的误区</h2>
+<p>OpenAI在其指南中错误地将“声明式 vs 命令式”与“工作流 vs Agent”混为一谈，忽略了可靠编排层的重要性。</p>
+<hr />
+<p>完整对比表格及更多细节可参考<a href="https://docs.google.com/spreadsheets/d/1B37VxTBuGLeTSPVWtz7UMsCdtXrqV5hCjWkbHN8tfAo/edit?usp=sharing">在线文档</a>。</p>
+    </div>
+        <div class="article">
+      <h3>TAMM AI Assistant: Transforming Government Services in Abu Dhabi with LangChain and LangGraph"</h3>
+      <a href=https://blog.langchain.dev/customers-abu-dhabi-government/>Read more</a>
+      <p># TAMM AI助手：用LangChain和LangGraph革新阿布扎比政府服务</p>
+<p>TAMM平台是阿布扎比政府的一站式服务平台，提供940多项服务，涵盖驾照申请、罚款支付和文件检索等。2024年10月，TAMM 3.0发布，集成AI技术优化服务交付、客户支持和运营决策。其核心是基于LangChain和LangGraph的AI助手，具备五大关键工作流：</p>
+<ol>
+<li><strong>服务查询与信息检索</strong>：通过RAG管道快速响应用户问题。</li>
+<li><strong>用户特定数据交互</strong>：根据用户历史提供个性化服务。</li>
+<li><strong>服务执行</strong>：跨平台无缝完成服务请求。</li>
+<li><strong>通用知识与讨论</strong>：利用大语言模型回答广泛问题。</li>
+<li><strong>支持流程</strong>：通过“拍照并报告”功能提升事件处理效率。</li>
+</ol>
+<p>TAMM AI助手严格遵守政府标准，结合多代理架构确保灵活性和精准性，为全球数字政府服务树立标杆。</p>
+    </div>
+        <div class="article">
+      <h3>How Harmonic built an investment agent with LangGraph and LangSmith— so VCs can focus on founders</h3>
+      <a href=https://blog.langchain.dev/customers-harmonic/>Read more</a>
+      <p># Harmonic 利用 LangGraph 和 LangSmith 构建投资智能助手</p>
+<p>Harmonic 是一家专注于初创企业发现的引擎，帮助风险投资（VC）更高效地寻找和评估潜在投资目标。通过整合公共数据与合作伙伴提供的私有数据，Harmonic 为用户提供强大的筛选工具和洞察力。</p>
+<h2 id="-7">问题：发现最具潜力的初创企业</h2>
+<p>VC 在早期阶段寻找优秀初创企业时面临挑战。传统搜索方式复杂且耗时，用户需要在数百个字段中组合筛选条件，效率低下。Harmonic 希望通过自然语言搜索和智能化筛选，显著缩短用户找到理想投资目标的时间。</p>
+<h2 id="langgraphlangsmith">解决方案：LangGraph 和 LangSmith 的应用</h2>
+<p>Harmonic 使用 <strong>LangGraph</strong> 构建模块化工作流，支持复杂的智能代理开发。其调试工具允许工程师实时检查节点状态，快速优化模型表现。此外，<strong>LangSmith</strong> 提供了强大的提示版本管理和性能跟踪功能，帮助团队协作优化提示设计，并确保模型迭代的可靠性。</p>
+<h3 id="-8">关键能力提升：</h3>
+<ol>
+<li><strong>自然语言查询</strong>：用户可以通过描述需求（如地理位置、融资情况、团队背景等），获得精准结果。</li>
+<li><strong>即时市场地图与研究</strong>：结合 Harmonic 数据与公开网络信息，自动生成市场分析报告。</li>
+<li><strong>模块化工作流</strong>：快速扩展功能，例如“研究代理”直接嵌入公司档案页面。</li>
+</ol>
+<h2 id="-9">成果与影响</h2>
+<ul>
+<li>搜索时间从数小时缩短至 <strong>1 分钟内</strong>。</li>
+<li>搜索成功率提升 <strong>30%</strong>。</li>
+<li>用户能够更快进入“顿悟时刻”，尤其在处理复杂或创意性查询时表现优异。</li>
+</ul>
+<p>通过 LangGraph 和 LangSmith，Harmonic 不仅为 VC 提供了高效的工具，还让他们能专注于与创始人的深度互动，从而赢得最佳投资机会。</p>
+    </div>
+</body>
+</html></p>
