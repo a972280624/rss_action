@@ -1,0 +1,132 @@
+<p><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>洗衣液价格比较</title>
+  </p>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .article { margin-bottom: 40px; }
+    .title { font-size: 24px; margin-bottom: 10px; }
+    .content { line-height: 1.6; }
+  </style>
+<p></head>
+<body>
+  </p>
+<h1>价格比较</h1>
+<ul>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-webtoon/">How Webtoon Entertainment built agentic workflows with LangGraph to scale story understanding</a></h2>
+          <p># Webtoon Entertainment 利用 LangGraph 构建叙事理解 AI
+
+**Webtoon Entertainment**（纳斯达克代码：WBTN）是全球领先的数字娱乐公司，以垂直滚动漫画格式闻名。旗下平台 **WEBTOON** 和 **Wattpad** 连接了全球数百万用户，提供多样化的内容。
+
+为应对海量内容处理需求，Webtoon 开发了 **Webtoon Comprehension AI (WCAI)**，基于 **LangGraph** 的多智能体工作流。WCAI 能够大规模理解角色、叙事及视觉/文本上下文，广泛应用于营销、翻译和推荐团队，显著减少手动操作，提升效率。
+
+## 技术亮点
+- **LangGraph** 提供模块化架构，支持动态路由和领域知识注入。
+- 核心工作流包括角色识别、说话人识别、叙事提取及业务洞察生成。
+- 集成 **LangSmith** 实现高效调试与监控。
+
+## 成果与展望
+WCAI 自动化叙事理解，减少内容团队 70% 工作量，推动创意与战略聚焦。未来计划包括系统评估、精细化人机交互及外部数据整合，持续扩展 Webtoon IP 的潜力。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/langsmith-alerts/">Catch production failures early with LangSmith Alerts</a></h2>
+          <p># LangSmith Alerts：提前捕获生产故障
+
+为了打造可靠的应用程序，LangSmith 推出了 **Alerts** 功能，帮助开发者实时监控 LLM 应用和代理。支持基于 **错误率**、**运行延迟** 和 **反馈评分** 等关键指标设置告警。通过分析生产环境的追踪数据，快速识别外部服务依赖（如 API 或数据库）的故障或性能下降，同时确保 LLM 输出的质量。
+
+### 核心功能
+- 支持按模型、工具调用等条件过滤特定运行子集。
+- 设置 5 或 15 分钟聚合窗口和阈值。
+- 集成 PagerDuty 或自定义 Webhook（如 Slack）发送通知。
+
+### 未来计划
+- 新增更多告警类型（如运行计数、Token 使用量）。
+- 支持相对值变化告警（如延迟增加 25%）。
+- 自定义时间窗口功能。
+
+[立即开始使用](https://docs.smith.langchain.com/observability/how_to_guides/alerts?ref=blog.langchain.dev) 或加入 [LangChain Slack 社区](https://www.langchain.com/join-community?ref=blog.langchain.dev) 提供反馈！</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-trellix/">How Trellix cut log parsing time from days to minutes with LangGraph Studio and LangSmith</a></h2>
+          <p># Trellix 利用 LangGraph 和 LangSmith 提升网络安全效率
+
+Trellix 是一家领先的网络安全公司，为解决客户请求积压和日志解析耗时的问题，开发了内部应用 Sidekick。通过结合 **LangSmith** 和 **LangGraph Studio**，Trellix 将日志解析时间从数天缩短至几分钟，并显著提升了客户满意度。
+
+## 问题背景
+Trellix 面临的主要挑战包括：
+- 客户请求的网络安全集成和日志解析需求激增。
+- 工程师需花费 2-3 天手动解析日志并开发集成，导致客户体验不佳。
+
+## 解决方案
+Sidekick 平台利用 AI 自动化以下任务：
+- 自动生成未知日志格式的解析器。
+- 加速插件开发，将传统多天的工作压缩至半天完成。
+
+**LangGraph 的优势**：
+- 提供模块化工具和抽象技术，支持高效开发。
+- 通过可视化工具（如 LangGraph Studio），帮助团队优化工作流并向非技术人员解释 AI 决策逻辑。
+
+**LangSmith 的作用**：
+- 测试多种架构性能，监控关键指标（如递归率、文档检索率）。
+- 提供直观的调试功能，提升开发效率。
+
+## 成果与未来展望
+- 日志解析时间从天缩短至分钟，大幅提升工程效率。
+- 加速客户请求处理，减少积压。
+- 计划扩展 Sidekick 功能至外部合作伙伴，进一步推动 AI 在网络安全领域的应用。
+
+Trellix 的成功案例展示了生成式 AI 在解决实际运营问题中的巨大潜力，为未来的创新奠定了基础。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/how-to-think-about-agent-frameworks/">How to think about agent frameworks</a></h2>
+          <p># 总结：如何思考 Agent 框架
+
+构建可靠的 **Agentic 系统** 的核心挑战在于确保大语言模型（LLM）在每一步都能获得适当的上下文。这包括精确控制输入 LLM 的内容，以及运行适当的步骤生成相关上下文。
+
+## 主要观点
+1. **Agentic 系统的组成**  
+   Agentic 系统既包含工作流（Workflows），也包含智能体（Agents）。两者并非对立，而是可以结合使用。
+
+2. **Agent 框架的本质**  
+   大多数 Agent 框架并非声明式或命令式编排框架，而只是提供了一组 Agent 抽象。这些抽象虽然易于上手，但可能隐藏了对 LLM 上下文的控制，增加了构建可靠系统的难度。
+
+3. **LangGraph 的定位**  
+   LangGraph 是一个编排框架，支持声明式和命令式 API，并在其基础上构建了一系列 Agent 抽象。它提供了灵活的工具，适用于从简单工作流到复杂多 Agent 系统的各种场景。
+
+4. **构建可靠 Agent 的难点**  
+   - LLM 可能因不完整或错误的上下文而出错。
+   - 需要解决的问题包括：系统提示不完整、用户输入模糊、工具描述不清晰等。
+
+5. **Agent 与 Workflow 的权衡**  
+   - 工作流更可预测，适合确定性任务。
+   - 智能体更具灵活性，适合复杂、动态的任务。
+   - 实际生产中，大多数系统是两者的结合。
+
+6. **未来趋势**  
+   随着模型性能提升，某些任务可能会更倾向于使用简单的工具调用循环（Tool-Calling Loop）。但对于独特任务，定制化的工作流仍然不可或缺。
+
+## 结论
+无论是构建 Agent 还是 Workflow，都需要一个可靠的框架来处理上下文管理、短期/长期记忆、容错、调试等功能。LangGraph 提供了低门槛的入门方式，同时也具备高天花板的灵活性，适合各种复杂度的应用场景。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-abu-dhabi-government/">TAMM AI Assistant: Transforming Government Services in Abu Dhabi with LangChain and LangGraph"</a></h2>
+          <p># TAMM AI助手：阿布扎比政府服务的革新  
+
+TAMM平台是阿布扎比政府的一站式服务平台，提供超过940项服务，涵盖驾驶执照申请、罚款支付和个人文件检索等。2024年10月，TAMM 3.0在GITEX全球大会上发布，标志着人工智能（AI）全面融入其生态系统，从服务交付到客户支持均实现智能化。  
+
+核心创新是基于LangChain和LangGraph构建的AI助手，具备以下五大关键工作流：  
+1. **服务查询与信息检索**：通过RAG管道高效回答用户问题。  
+2. **用户特定数据交互**：根据用户历史提供个性化响应。  
+3. **服务执行**：跨平台无缝完成服务请求。  
+4. **通用知识与讨论**：扩展至广泛主题的智能问答。  
+5. **支持流程**：如“拍照并报告”功能，自动处理用户提交的问题。  
+
+TAMM AI助手通过多代理架构提升灵活性和标准化，确保高效、精准的服务体验，巩固了TAMM在全球数字政府服务中的领先地位。未来，TAMM将继续引领公民参与和服务交付的数字化转型。</p>
+        </li>
+  </ul>
+<p></body>
+</html></p>
