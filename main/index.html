@@ -1,0 +1,142 @@
+<p><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>洗衣液价格比较</title>
+  </p>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .article { margin-bottom: 40px; }
+    .title { font-size: 24px; margin-bottom: 10px; }
+    .content { line-height: 1.6; }
+  </style>
+<p></head>
+<body>
+  </p>
+<h1>价格比较</h1>
+<ul>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-webtoon/">How Webtoon Entertainment built agentic workflows with LangGraph to scale story understanding</a></h2>
+          <p># Webtoon Entertainment 使用 LangGraph 构建叙事理解 AI
+
+**Webtoon Entertainment**（纳斯达克：WBTN）是全球数字娱乐公司，以垂直滚动漫画格式闻名，旗下拥有两大平台 **WEBTOON** 和 **Wattpad**。通过将原创 IP 改编为影视、动画等形式，Webtoon 持续引领内容技术领域。
+
+为处理海量内容，Webtoon 开发了 **Webtoon Comprehension AI (WCAI)**，利用 **LangGraph** 的多智能体工作流实现叙事理解自动化。WCAI 可快速提取角色、情节和视觉/文本信息，支持营销、翻译和推荐团队的多种需求，显著减少人工操作。
+
+### 技术亮点
+- 基于 **Vision-Language Models (VLMs)** 和 **LangGraph** 的模块化架构。
+- 核心工作流包括角色识别、对话归属、叙事提取和业务洞察生成。
+- 通过 **LangSmith** 提供强大的调试和可观测性支持。
+
+### 成果与优势
+- 自动化叙事理解，减少 70% 的人工工作量。
+- 提供高质量结构化数据，支持跨团队协作。
+- 易于扩展和优化，满足不同业务场景需求。
+
+未来，Webtoon 将继续改进 WCAI，探索外部知识整合，进一步释放 IP 潜力。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/langsmith-alerts/">Catch production failures early with LangSmith Alerts</a></h2>
+          <p># LangSmith Alerts：提前捕获生产故障
+
+可靠的应用程序是优质用户体验的基础，而提前捕获故障则是关键。LangSmith 推出了 **Alerts** 功能，帮助开发者实时监控 LLM 应用和代理，支持基于 **错误率**、**运行延迟** 和 **反馈评分** 等关键指标设置警报。
+
+## 为什么主动监控重要？
+
+1. **依赖外部服务**：LLM 应用通常依赖多个外部服务（如 API、数据库等），这些服务的中断或延迟会显著影响用户体验。
+2. **质量和正确性**：LLM 输出质量可能因提示、模型或输入的变化而不稳定，反馈评分警报可及时发现质量问题。
+
+## LangSmith Alerts 概述
+
+- 支持的指标：
+  1. 错误数量和错误率
+  2. 平均延迟
+  3. 平均反馈评分
+- 可通过筛选条件聚焦特定运行子集，并设置聚合窗口（5 或 15 分钟）和阈值。
+- 集成 PagerDuty 或自定义 Webhook（如 Slack）以融入现有工作流。
+
+[立即开始设置警报](https://docs.smith.langchain.com/observability/how_to_guides/alerts?ref=blog.langchain.dev)
+
+## 未来计划
+
+- 新增警报类型：运行计数和 LLM Token 使用量。
+- 支持相对值变化警报（如延迟增加 25%）。
+- 自定义时间窗口警报。
+
+如有反馈，请加入 [LangChain Slack 社区](https://www.langchain.com/join-community?ref=blog.langchain.dev) 与我们联系！</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-trellix/">How Trellix cut log parsing time from days to minutes with LangGraph Studio and LangSmith</a></h2>
+          <p># Trellix 使用 LangGraph 和 LangSmith 提升日志解析效率
+
+Trellix 是一家领先的网络安全公司，服务超过 4 万名客户。为了解决客户请求积压和日志解析耗时的问题，Trellix 利用 **LangSmith** 和 **LangGraph** 开发了内部应用 Sidekick，显著提升了效率。
+
+## 问题背景
+Trellix 面临的主要挑战是客户请求的积压和手动日志解析的低效。每个请求通常需要开发人员花费 2-3 天时间处理，导致客户体验差、支持流程延迟。
+
+## 解决方案
+通过 Sidekick，Trellix 实现了自动化日志解析和脚本生成：
+- **日志解析时间从几天缩短到几分钟**。
+- 自动化插件开发流程，将传统多天的任务缩短至半天完成。
+- 使用 **LangGraph** 的模块化工具和 **LangGraph Studio** 的可视化功能优化工作流，提升开发效率。
+- 借助 **LangSmith** 进行性能监控和实验，确保数据驱动的决策。
+
+## 影响与未来
+- 工程师和客户的效率显著提升。
+- 客户请求解决速度加快，减少积压。
+- 提高 AI 模型性能，并通过可视化增强非技术利益相关者的信心。
+未来，Trellix 计划将 Sidekick 的能力扩展到外部合作伙伴，进一步推动 AI 驱动的网络安全解决方案。
+
+## 结论
+借助 LangGraph 和 LangSmith，Trellix 成功解决了日志解析和客户支持的痛点，为 AI 在网络安全领域的应用树立了标杆。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/how-to-think-about-agent-frameworks/">How to think about agent frameworks</a></h2>
+          <p>```markdown
+文章总结：如何思考智能体框架
+
+- **核心挑战**：构建可靠的智能体系统的关键在于确保大语言模型（LLM）在每一步都能获得适当的上下文。这包括精确控制输入内容以及生成相关上下文的步骤。
+- **智能体系统组成**：智能体系统既包含工作流（workflows），也包含智能体（agents），以及两者的结合。
+- **框架现状**：大多数智能体框架并非声明式或命令式编排工具，而只是一组智能体抽象。这些抽象虽然便于入门，但可能掩盖了对上下文控制的复杂性。
+- **LangGraph**：LangGraph 是一个兼具声明式和命令式 API 的编排框架，内置多种智能体抽象，支持灵活的工作流和智能体结合。
+
+### 主要观点
+1. **智能体定义**：
+   - OpenAI 定义智能体为“独立完成任务的系统”，但过于模糊。
+   - Anthropic 提出更技术性的定义，将智能体与工作流区分开：工作流由预定义路径驱动，而智能体则动态决策。
+2. **构建难点**：
+   - 智能体性能不佳的主要原因是模型接收到不完整或错误的上下文。
+   - 需要精确控制输入到 LLM 的内容，这是可靠性的关键。
+3. **框架价值**：
+   - 提供短/长期记忆、人机交互、流式处理等功能。
+   - LangGraph 支持调试、可观测性、容错等生产级特性。
+4. **未来趋势**：
+   - 随着模型进步，简单工具调用循环可能适用于某些任务，但仍需结合工作流。
+   - 大多数实际应用会是智能体和工作流的混合体。
+
+### 对 OpenAI 的批评
+OpenAI 的智能体指南存在误导，混淆了“声明式 vs 命令式”、“工作流 vs 智能体”等维度，忽略了可靠编排层的重要性。
+
+### 总结
+无论是智能体还是工作流，所有形式的智能体系统都受益于框架提供的通用功能，如上下文控制、容错机制和人机交互支持。LangGraph 旨在提供灵活且可控的解决方案。
+```</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.dev/customers-abu-dhabi-government/">TAMM AI Assistant: Transforming Government Services in Abu Dhabi with LangChain and LangGraph"</a></h2>
+          <p># TAMM AI助手：阿布扎比政府服务的革新  
+
+TAMM平台是阿布扎比政府的一站式服务平台，提供超过940项服务，涵盖公民、居民、游客和企业的多样化需求。2024年10月，TAMM 3.0版本在GITEX全球大会上发布，展示了AI技术在服务交付、客户支持和日常运营中的深度整合。其核心是基于LangChain和LangGraph构建的AI助手，能够主动预测用户需求、执行个性化任务、自动化服务流程，并生成可操作的洞察。
+
+AI助手通过五大关键工作流提升用户体验：  
+1. **服务查询与信息检索**：利用RAG管道精准回答用户问题。  
+2. **用户特定数据交互**：根据用户历史提供定制化服务。  
+3. **服务执行**：跨平台无缝完成服务请求。  
+4. **通用知识与讨论**：扩展LLM能力，支持广泛的主题问答。  
+5. **支持流程**：如“拍照并报告”功能，智能处理用户反馈。  
+
+未来，TAMM将继续推动数字政府服务创新，巩固其全球领先地位。</p>
+        </li>
+  </ul>
+<p></body>
+</html></p>
