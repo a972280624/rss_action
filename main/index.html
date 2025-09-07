@@ -1,0 +1,37 @@
+<p><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>洗衣液价格比较</title>
+  </p>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .article { margin-bottom: 40px; }
+    .title { font-size: 24px; margin-bottom: 10px; }
+    .content { line-height: 1.6; }
+  </style>
+<p></head>
+<body>
+  </p>
+<h1>价格比较</h1>
+<ul>
+        <li>
+          <h2><a href="https://blog.langchain.com/building-langgraph/">Building LangGraph: Designing an Agent Runtime from first principles</a></h2>
+          <p>### LangGraph 设计理念与实践总结
+
+LangGraph 是基于生产需求重新设计的低代码、高可控性智能体框架。针对 LLM 智能体的**高延迟、易失败、非确定性**三大挑战，LangGraph 提炼出六大核心能力：**并行化、流式输出、任务队列、检查点、人机协同、追踪**。其设计摒弃传统 DAG 框架，采用基于 BSP/Pregel 的循环图执行模型，通过“通道-节点”机制实现安全并发与状态管理。架构上分离 SDK 与运行时，支持灵活扩展。检查点与流式传输确保容错与用户体验，且性能随智能体规模线性扩展，不随历史长度退化。LangGraph 以最小抽象提供最大控制力，专为复杂、长周期的生产级智能体而生。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.com/standard-message-content/">Standard message content</a></h2>
+          <p>LangChain 推出标准化消息内容（Standard Content），旨在统一不同大模型提供商（如 OpenAI、Anthropic 等）在推理、引用、工具调用等方面的 API 差异，实现“一次编写，随处运行”。通过新增的 `.content_blocks` 属性，将各平台异构的响应内容（如思考过程、网页搜索、函数调用等）转化为统一的类型化结构，提升跨平台兼容性与开发效率。该功能完全向后兼容，不影响现有代码，且支持延迟加载，为构建可维护、可扩展的 LLM 应用提供坚实基础。</p>
+        </li>
+        <li>
+          <h2><a href="https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/">LangChain & LangGraph 1.0 alpha releases</a></h2>
+          <p>```markdown
+LangChain 与 LangGraph 发布 1.0 alpha 版本（支持 Python 和 JS）。LangGraph 是生产级的智能体编排框架，提供持久化执行、人机协作等能力，已被 Uber、LinkedIn 等公司采用。LangChain 聚焦于核心“智能体”抽象：赋予 LLM 工具调用能力，循环执行直至完成。新 `create_agent` 实现基于 LangGraph，更稳定高效，并保留 `langchain-legacy` 兼容旧代码。`langchain-core` 升级支持消息内容块（content blocks），适配现代 LLM API。同时推出全新统一文档网站，便于开发者查阅。
+```</p>
+        </li>
+  </ul>
+<p></body>
+</html></p>
