@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光学计算工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .wavelength-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .select-group {
+            margin-bottom: 25px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .result-formula {
+            font-size: 13px;
+            color: #888;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.6;
+        }
+
+        .note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            background: #f5f5f5;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 2px solid transparent;
+            border-bottom: none;
+            margin-bottom: -2px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>光学计算工具</h1>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('wavelength')">PV波长换算</div>
+            <div class="tab" onclick="switchTab('parallelism')">平行度计算</div>
+            <div class="tab" onclick="switchTab('unit')">单位换算</div>
+        </div>
+
+        <div id="wavelengthTab" class="tab-content active">
+            <div class="input-group">
+            <label for="pvValue">PV值（λ）</label>
+            <input type="text" id="pvValue" placeholder="例如: 0.25 或 1/4">
+            <div style="font-size: 12px; color: #888; margin-top: 5px;">支持小数或分数格式（如 1/4、1/2、1/10）</div>
+        </div>
+
+        <div class="select-group">
+            <label for="sourceWavelength">源波长</label>
+            <select id="sourceWavelength">
+                <option value="633">633 nm (He-Ne激光)</option>
+                <option value="546.1">546.1 nm (汞灯绿光)</option>
+                <option value="589.3">589.3 nm (钠灯黄光)</option>
+                <option value="541.6">541.6 nm</option>
+                <option value="435.8">435.8 nm (汞灯蓝光)</option>
+                <option value="custom">自定义...</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="customSourceGroup" style="display: none;">
+            <label for="customSourceWavelength">自定义源波长</label>
+            <input type="number" id="customSourceWavelength" placeholder="输入波长值" step="0.1" min="1">
+        </div>
+
+        <div class="select-group">
+            <label for="targetWavelength">目标波长</label>
+            <select id="targetWavelength">
+                <option value="541.6">541.6 nm</option>
+                <option value="633">633 nm (He-Ne激光)</option>
+                <option value="546.1">546.1 nm (汞灯绿光)</option>
+                <option value="589.3">589.3 nm (钠灯黄光)</option>
+                <option value="435.8">435.8 nm (汞灯蓝光)</option>
+                <option value="custom">自定义...</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="customTargetGroup" style="display: none;">
+            <label for="customTargetWavelength">自定义目标波长</label>
+            <input type="number" id="customTargetWavelength" placeholder="输入波长值" step="0.1" min="1">
+        </div>
+
+        <button class="btn" onclick="calculate()">换算</button>
+
+        <div class="result" id="result">
+            <div class="result-item">
+                <div class="result-label">原始要求</div>
+                <div class="result-value" id="originalValue">PV < 0.25λ @ 633nm</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">换算结果</div>
+                <div class="result-value" id="convertedValue">PV < 0.213λ @ 541.6nm</div>
+                <div class="result-formula" id="formula">公式: PV₂ = PV₁ × (λ₂/λ₁) = 0.25 × (541.6/633)</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">参考值（常用标准）</div>
+                <div class="result-value" id="referenceValue">1/4λ</div>
+                <div class="result-formula" id="referenceDetail">最接近的常用PV值</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">波长换算比</div>
+                <div class="result-value" id="ratio">0.856</div>
+            </div>
+        </div>
+
+        <div class="note">
+                        <strong>说明：</strong>
+                        PV（峰谷值）是光学表面面型的重要指标。当测量波长改变时，PV值的λ单位也会按比例变化。<br><br>
+                        换算公式：PV₂ = PV₁ × (λ₁/λ₂)<br>
+                        其中 PV₁ 和 PV₂ 分别是源波长和目标波长下的PV值，λ₁ 和 λ₂ 是对应的波长值。<br><br>
+                        原理：实际物理高度偏差不变，PV值 = 实际偏差 / 波长，因此波长越小，PV值越大。
+                    </div>
+        
+                    <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                        <h2 style="font-size: 18px; color: #333; margin-bottom: 20px; text-align: center;">光圈N换算λ</h2>
+        
+                        <div class="input-group">
+                            <label for="apertureN">光圈值 N</label>
+                            <input type="number" id="apertureN" placeholder="例如: 0.5" step="0.1" min="0">
+                            <div style="font-size: 12px; color: #888; margin-top: 5px;">牛顿环（干涉条纹）数目</div>
+                        </div>
+        
+                        <div class="input-group">
+                            <label for="apertureWavelength">参考波长（nm）</label>
+                            <select id="apertureWavelength">
+                                <option value="633">633 nm (He-Ne激光)</option>
+                                <option value="546.1">546.1 nm (汞灯绿光)</option>
+                                <option value="589.3">589.3 nm (钠灯黄光)</option>
+                                <option value="541.6">541.6 nm</option>
+                                <option value="435.8">435.8 nm (汞灯蓝光)</option>
+                                <option value="custom">自定义...</option>
+                            </select>
+                        </div>
+        
+                        <div class="input-group" id="customApertureGroup" style="display: none;">
+                            <label for="customApertureWavelength">自定义参考波长</label>
+                            <input type="number" id="customApertureWavelength" placeholder="输入波长值" step="0.1" min="1">
+                        </div>
+        
+                        <button class="btn" onclick="calculateAperture()">换算</button>
+        
+                        <div class="result" id="apertureResult">
+                            <div class="result-item">
+                                <div class="result-label">输入参数</div>
+                                <div class="result-value" id="apertureInput">0.5N @ 633nm</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">PV值（λ）</div>
+                                <div class="result-value" id="aperturePV">0.25λ</div>
+                                <div class="result-formula" id="apertureFormula">公式: PV = N/2 = 0.5/2</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">参考值（常用分数）</div>
+                                <div class="result-value" id="apertureReference">1/4λ</div>
+                                <div class="result-formula" id="apertureReferenceDetail">最接近的常用PV值</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-label">等效高度差</div>
+                                <div class="result-value" id="apertureHeight">79.125 nm</div>
+                                <div class="result-formula" id="apertureHeightFormula">h = PV × λ = 0.25 × 633</div>
+                            </div>
+                        </div>
+        
+                        <div class="note">
+                            <strong>说明：</strong>
+                            光圈（Newton's Rings，N）是光学抛光加工中常用的面型表达方式，通过干涉条纹的数目来表示表面不平整度。<br><br>
+                            换算公式：PV值（λ）= N/2<br>
+                            其中 N 为光圈值（干涉条纹数），PV值为以λ为单位的表面高度偏差。<br><br>
+                            物理意义：<br>
+                            - 每个光圈（N=1）对应表面高度差为λ/2<br>
+                            - 因此 0.5N 对应 0.25λ<br>
+                            - 等效高度差 = PV值 × 参考波长
+                        </div>
+                    </div>
+                </div>
+        
+                <div id="parallelismTab" class="tab-content">            <div class="input-group">
+                <label>侧垂角度</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div>
+                        <input type="number" id="angleDeg" placeholder="度" step="1" min="0" value="0">
+                        <div style="font-size: 12px; color: #888; margin-top: 3px; text-align: center;">度 (°)</div>
+                    </div>
+                    <div>
+                        <input type="number" id="angleMin" placeholder="分" step="1" min="0" max="59" value="0">
+                        <div style="font-size: 12px; color: #888; margin-top: 3px; text-align: center;">分 (′)</div>
+                    </div>
+                    <div>
+                        <input type="number" id="angleSec" placeholder="秒" step="0.1" min="0" max="59.9" value="30">
+                        <div style="font-size: 12px; color: #888; margin-top: 3px; text-align: center;">秒 (″)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="surfaceLength">加工面长度（mm）</label>
+                <input type="number" id="surfaceLength" placeholder="例如: 20" step="0.1" min="0">
+            </div>
+
+            <button class="btn" onclick="calculateParallelism()">计算平行度</button>
+
+            <div class="result" id="parallelismResult">
+                <div class="result-item">
+                    <div class="result-label">输入参数</div>
+                    <div class="result-value" id="parallelismInput">0°0′30″ @ 20mm</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">允许偏差（平行度）</div>
+                    <div class="result-value" id="parallelismValue">0.00291 mm</div>
+                    <div class="result-formula" id="parallelismFormula">公式: h = L × tan(θ) = 20 × tan(0°0′30″)</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">等效高度差（mm）</div>
+                    <div class="result-value" id="heightDiff">0.002909 mm</div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>说明：</strong>
+                平行度计算用于根据侧垂角度要求和加工面长度，确定允许的平行度偏差。<br><br>
+                计算公式：h = L × tan(θ)<br>
+                其中 h 为两端高度差（平行度偏差，单位mm），L 为加工面长度（单位mm），θ 为侧垂角度（度、分、秒）。<br><br>
+                换算：1度 = 60分 = 3600秒；1秒 = (π/180)/3600 弧度 ≈ 4.848×10⁻⁶ 弧度
+            </div>
+
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                <h2 style="font-size: 18px; color: #333; margin-bottom: 20px; text-align: center;">反算：根据平行度偏差计算角度</h2>
+
+                <div class="input-group">
+                    <label for="reverseParallelism">允许平行度偏差（mm）</label>
+                    <input type="number" id="reverseParallelism" placeholder="例如: 0.002" step="0.001" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="reverseSurfaceLength">加工面长度（mm）</label>
+                    <input type="number" id="reverseSurfaceLength" placeholder="例如: 20" step="0.1" min="0">
+                </div>
+
+                <button class="btn" onclick="calculateReverseParallelism()">反算角度</button>
+
+                <div class="result" id="reverseResult">
+                    <div class="result-item">
+                        <div class="result-label">输入参数</div>
+                        <div class="result-value" id="reverseInput">0.002mm @ 20mm</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">允许偏差角度</div>
+                        <div class="result-value" id="reverseAngle">0°0′20.6″</div>
+                        <div class="result-formula" id="reverseFormula">公式: θ = arctan(h/L) = arctan(0.002/20)</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">角度（度）</div>
+                        <div class="result-value" id="reverseAngleDeg">0.00573°</div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>反算说明：</strong>
+                    根据允许的平行度偏差和加工面长度，反推允许的侧垂角度。<br><br>
+                    计算公式：θ = arctan(h/L)<br>
+                    其中 θ 为侧垂角度，h 为允许平行度偏差（单位mm），L 为加工面长度（单位mm）。<br><br>
+                    换算：1度 = 60分 = 3600秒
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                <h2 style="font-size: 18px; color: #333; margin-bottom: 20px; text-align: center;">条纹换算平行度</h2>
+
+                <div class="input-group">
+                    <label for="fringeCount">干涉条纹数量 N（条）</label>
+                    <input type="number" id="fringeCount" placeholder="例如: 5" step="1" min="0">
+                    <div style="font-size: 12px; color: #888; margin-top: 5px;">在测量范围内观察到的干涉条纹数量</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="fringeWavelength">检测光源波长 λ（nm）</label>
+                    <select id="fringeWavelength">
+                        <option value="633">633 nm (He-Ne激光)</option>
+                        <option value="546.1">546.1 nm (汞灯绿光)</option>
+                        <option value="589.3">589.3 nm (钠灯黄光)</option>
+                        <option value="541.6">541.6 nm</option>
+                        <option value="435.8">435.8 nm (汞灯蓝光)</option>
+                        <option value="custom">自定义...</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="customFringeWavelengthGroup" style="display: none;">
+                    <label for="customFringeWavelength">自定义波长</label>
+                    <input type="number" id="customFringeWavelength" placeholder="输入波长值" step="0.1" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="refractiveIndex">材料折射率 n</label>
+                    <input type="number" id="refractiveIndex" placeholder="例如: 1.516" step="0.001" min="1" value="1.516">
+                    <div style="font-size: 12px; color: #888; margin-top: 5px;">K9玻璃 ≈ 1.516，石英 ≈ 1.458</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="apertureDiameter">有效孔径直径 D（mm）</label>
+                    <input type="number" id="apertureDiameter" placeholder="例如: 20" step="0.1" min="0">
+                    <div style="font-size: 12px; color: #888; margin-top: 5px;">测量区域的有效孔径或直径</div>
+                </div>
+
+                <button class="btn" onclick="calculateFringeParallelism()">计算平行度偏差</button>
+
+                <div class="result" id="fringeResult">
+                    <div class="result-item">
+                        <div class="result-label">输入参数</div>
+                        <div class="result-value" id="fringeInput">5条 @ 633nm, n=1.516, D=20mm</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">平行度偏差（弧度）</div>
+                        <div class="result-value" id="fringeAngleRad">0.000033 Rad</div>
+                        <div class="result-formula" id="fringeFormulaRad">公式: θ = N·λ/(2·n·D) = 5×0.000633/(2×1.516×20)</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">平行度偏差（角秒）</div>
+                        <div class="result-value" id="fringeAngleArcsec">6.8″</div>
+                        <div class="result-formula" id="fringeFormulaArcsec">换算: 1 Rad = 206265″</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">平行度偏差（度分秒）</div>
+                        <div class="result-value" id="fringeAngleDMS">0°0′6.8″</div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>原理说明：</strong>
+                    通过干涉条纹数量计算平行度偏差（楔角），这是光学检测中常用的方法。<br><br>
+                    计算公式：θ = (N · λ) / (2 · n · D)<br>
+                    其中：<br>
+                    - N：干涉条纹数量（条）<br>
+                    - λ：检测光源波长（nm），需转换为mm（λ_mmm = λ_nm / 1,000,000）<br>
+                    - n：材料折射率（空气/真空中 n=1）<br>
+                    - D：有效孔径直径（mm）<br>
+                    - θ：平行度偏差（弧度）<br><br>
+                    单位换算：<br>
+                    - 1 弧度 = 206265 角秒<br>
+                    - 1 度 = 60 分 = 3600 秒<br>
+                    - 1 角秒 = (π/180)/3600 弧度 ≈ 4.848×10⁻⁶ 弧度
+                </div>
+            </div>
+        </div>
+
+        <div id="unitTab" class="tab-content">
+            <div class="input-group">
+                <label for="unitValue">输入数值</label>
+                <input type="number" id="unitValue" placeholder="例如: 100" step="0.01" min="0">
+            </div>
+
+            <div class="input-group">
+                <label for="sourceUnit">源单位</label>
+                <select id="sourceUnit">
+                    <option value="mm">毫米 (mm)</option>
+                    <option value="um">微米 (μm)</option>
+                    <option value="nm">纳米 (nm)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="targetUnit">目标单位</label>
+                <select id="targetUnit">
+                    <option value="um">微米 (μm)</option>
+                    <option value="mm">毫米 (mm)</option>
+                    <option value="nm">纳米 (nm)</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="calculateUnit()">换算</button>
+
+            <div class="result" id="unitResult">
+                <div class="result-item">
+                    <div class="result-label">原始数值</div>
+                    <div class="result-value" id="unitOriginal">100 mm</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">换算结果</div>
+                    <div class="result-value" id="unitConverted">100000 μm</div>
+                    <div class="result-formula" id="unitFormula">1 mm = 1000 μm</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">换算关系</div>
+                    <div class="result-value" id="unitRelation">1 mm = 1000 μm = 1,000,000 nm</div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>说明：</strong>
+                长度单位换算，支持毫米、微米、纳米之间的相互转换。<br><br>
+                换算关系：<br>
+                1 毫米 (mm) = 1000 微米 (μm) = 1,000,000 纳米 (nm)<br>
+                1 微米 (μm) = 1000 纳米 (nm) = 0.001 毫米 (mm)<br>
+                1 纳米 (nm) = 0.001 微米 (μm) = 0.000001 毫米 (mm)
+            </div>
+
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                <h2 style="font-size: 18px; color: #333; margin-bottom: 20px; text-align: center;">计算近视值（常用分数）</h2>
+
+                <div class="input-group">
+                    <label for="fractionInput">输入数值</label>
+                    <input type="number" id="fractionInput" placeholder="例如: 0.245" step="0.001" min="0">
+                </div>
+
+                <button class="btn" onclick="calculateFraction()">匹配分数</button>
+
+                <div class="result" id="fractionResult">
+                    <div class="result-item">
+                        <div class="result-label">输入数值</div>
+                        <div class="result-value" id="fractionInputDisplay">0.245</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">最接近的常用分数</div>
+                        <div class="result-value" id="fractionDisplay">1/4</div>
+                        <div class="result-formula" id="fractionDetail">实际值 0.245 → 参考值 0.25</div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>说明：</strong>
+                    将输入的数值匹配到最接近的常用光学面型分数表达。<br><br>
+                    支持的常用分数：<br>
+                    3, 2, 1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/8, 1/10, 1/12, 1/15, 1/20, 1/30, 1/40, 1/50, 1/100
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            if (tabName === 'wavelength') {
+                tabs[0].classList.add('active');
+                document.getElementById('wavelengthTab').classList.add('active');
+            } else if (tabName === 'parallelism') {
+                tabs[1].classList.add('active');
+                document.getElementById('parallelismTab').classList.add('active');
+            } else if (tabName === 'unit') {
+                tabs[2].classList.add('active');
+                document.getElementById('unitTab').classList.add('active');
+            }
+        }
+
+        document.getElementById('apertureWavelength').addEventListener('change', function() {
+            document.getElementById('customApertureGroup').style.display =
+                this.value === 'custom' ? 'block' : 'none';
+        });
+
+        document.getElementById('fringeWavelength').addEventListener('change', function() {
+            document.getElementById('customFringeWavelengthGroup').style.display =
+                this.value === 'custom' ? 'block' : 'none';
+        });
+
+        document.getElementById('sourceWavelength').addEventListener('change', function() {
+            document.getElementById('customSourceGroup').style.display = 
+                this.value === 'custom' ? 'block' : 'none';
+        });
+
+        document.getElementById('targetWavelength').addEventListener('change', function() {
+            document.getElementById('customTargetGroup').style.display = 
+                this.value === 'custom' ? 'block' : 'none';
+        });
+
+        function calculate() {
+            const input = document.getElementById('pvValue').value.trim();
+            let pvValue;
+
+            if (input.includes('/')) {
+                const parts = input.split('/');
+                if (parts.length !== 2) {
+                    alert('分数格式不正确，请使用 "分子/分母" 格式');
+                    return;
+                }
+                const numerator = parseFloat(parts[0]);
+                const denominator = parseFloat(parts[1]);
+                if (isNaN(numerator) || isNaN(denominator) || denominator === 0) {
+                    alert('请输入有效的分数值');
+                    return;
+                }
+                pvValue = numerator / denominator;
+            } else {
+                pvValue = parseFloat(input);
+            }
+
+            if (isNaN(pvValue) || pvValue <= 0) {
+                alert('请输入有效的PV值');
+                return;
+            }
+
+            let sourceWavelength = document.getElementById('sourceWavelength').value;
+            if (sourceWavelength === 'custom') {
+                sourceWavelength = parseFloat(document.getElementById('customSourceWavelength').value);
+                if (isNaN(sourceWavelength) || sourceWavelength <= 0) {
+                    alert('请输入有效的源波长值');
+                    return;
+                }
+            } else {
+                sourceWavelength = parseFloat(sourceWavelength);
+            }
+
+            let targetWavelength = document.getElementById('targetWavelength').value;
+            if (targetWavelength === 'custom') {
+                targetWavelength = parseFloat(document.getElementById('customTargetWavelength').value);
+                if (isNaN(targetWavelength) || targetWavelength <= 0) {
+                    alert('请输入有效的目标波长值');
+                    return;
+                }
+            } else {
+                targetWavelength = parseFloat(targetWavelength);
+            }
+
+            if (sourceWavelength === targetWavelength) {
+                alert('源波长和目标波长不能相同');
+                return;
+            }
+
+            const ratio = sourceWavelength / targetWavelength;
+            const convertedPV = pvValue * ratio;
+
+            const originalDisplay = input.includes('/') ? input : pvValue;
+
+            document.getElementById('originalValue').textContent = 
+                `PV < ${originalDisplay}λ @ ${sourceWavelength}nm`;
+
+            document.getElementById('convertedValue').textContent =
+                `PV < ${convertedPV.toFixed(4)}λ @ ${targetWavelength}nm`;
+
+            document.getElementById('formula').textContent =
+                `公式: PV₂ = PV₁ × (λ₁/λ₂) = ${originalDisplay} × (${sourceWavelength}/${targetWavelength})`;
+
+            document.getElementById('ratio').textContent = ratio.toFixed(4);
+
+            const reference = findNearestPV(convertedPV);
+            document.getElementById('referenceValue').textContent = reference.display;
+            document.getElementById('referenceDetail').textContent =
+                `实际值 ${convertedPV.toFixed(4)}λ → 参考值 ${reference.value.toFixed(4)}λ`;
+
+            document.getElementById('result').classList.add('show');
+        }
+
+        function calculateAperture() {
+            const apertureN = parseFloat(document.getElementById('apertureN').value);
+
+            if (isNaN(apertureN) || apertureN < 0) {
+                alert('请输入有效的光圈值');
+                return;
+            }
+
+            let wavelength = document.getElementById('apertureWavelength').value;
+            if (wavelength === 'custom') {
+                wavelength = parseFloat(document.getElementById('customApertureWavelength').value);
+                if (isNaN(wavelength) || wavelength <= 0) {
+                    alert('请输入有效的参考波长值');
+                    return;
+                }
+            } else {
+                wavelength = parseFloat(wavelength);
+            }
+
+            const pvValue = apertureN / 2;
+            const heightDiffNm = pvValue * wavelength;
+
+            document.getElementById('apertureInput').textContent =
+                `${apertureN}N @ ${wavelength}nm`;
+
+            document.getElementById('aperturePV').textContent =
+                `${pvValue.toFixed(4)}λ`;
+
+            document.getElementById('apertureFormula').textContent =
+                `公式: PV = N/2 = ${apertureN}/2`;
+
+            const reference = findNearestPV(pvValue);
+            document.getElementById('apertureReference').textContent = reference.display;
+            document.getElementById('apertureReferenceDetail').textContent =
+                `实际值 ${pvValue.toFixed(4)}λ → 参考值 ${reference.value.toFixed(4)}λ`;
+
+            document.getElementById('apertureHeight').textContent =
+                `${heightDiffNm.toFixed(3)} nm`;
+
+            document.getElementById('apertureHeightFormula').textContent =
+                `h = PV × λ = ${pvValue.toFixed(4)} × ${wavelength}`;
+
+            document.getElementById('apertureResult').classList.add('show');
+        }
+
+        function findNearestPV(value) {
+            const commonPV = [
+                { fraction: '3', value: 3 },
+                { fraction: '2', value: 2 },
+                { fraction: '1', value: 1 },
+                { fraction: '1/2', value: 0.5 },
+                { fraction: '1/3', value: 0.3333 },
+                { fraction: '1/4', value: 0.25 },
+                { fraction: '1/5', value: 0.2 },
+                { fraction: '1/6', value: 0.1667 },
+                { fraction: '1/8', value: 0.125 },
+                { fraction: '1/10', value: 0.1 },
+                { fraction: '1/12', value: 0.0833 },
+                { fraction: '1/15', value: 0.0667 },
+                { fraction: '1/20', value: 0.05 },
+                { fraction: '1/30', value: 0.0333 },
+                { fraction: '1/40', value: 0.025 },
+                { fraction: '1/50', value: 0.02 },
+                { fraction: '1/100', value: 0.01 }
+            ];
+
+            let nearest = commonPV[0];
+            let minDiff = Math.abs(value - nearest.value);
+
+            for (const pv of commonPV) {
+                const diff = Math.abs(value - pv.value);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearest = pv;
+                }
+            }
+
+            return {
+                display: `${nearest.fraction}λ`,
+                value: nearest.value
+            };
+        }
+
+        function calculateParallelism() {
+            const angleDeg = parseFloat(document.getElementById('angleDeg').value) || 0;
+            const angleMin = parseFloat(document.getElementById('angleMin').value) || 0;
+            const angleSec = parseFloat(document.getElementById('angleSec').value) || 0;
+            const surfaceLength = parseFloat(document.getElementById('surfaceLength').value);
+
+            if (angleDeg < 0 || angleMin < 0 || angleSec < 0 || angleMin >= 60 || angleSec >= 60) {
+                alert('请输入有效的角度值（分和秒必须小于60）');
+                return;
+            }
+
+            if (isNaN(surfaceLength) || surfaceLength <= 0) {
+                alert('请输入有效的加工面长度');
+                return;
+            }
+
+            if (angleDeg === 0 && angleMin === 0 && angleSec === 0) {
+                alert('侧垂角度不能为0');
+                return;
+            }
+
+            const totalAngleDeg = angleDeg + angleMin / 60 + angleSec / 3600;
+            const totalAngleRad = totalAngleDeg * Math.PI / 180;
+            const heightDiffMm = surfaceLength * Math.tan(totalAngleRad);
+
+            const angleDisplay = `${angleDeg}°${angleMin}′${angleSec}″`;
+
+            document.getElementById('parallelismInput').textContent =
+                `${angleDisplay} @ ${surfaceLength}mm`;
+
+            document.getElementById('parallelismValue').textContent =
+                `${heightDiffMm.toFixed(5)} mm`;
+
+            document.getElementById('parallelismFormula').textContent =
+                `公式: h = L × tan(θ) = ${surfaceLength} × tan(${angleDisplay})`;
+
+            document.getElementById('heightDiff').textContent =
+                `${heightDiffMm.toFixed(6)} mm`;
+
+            document.getElementById('parallelismResult').classList.add('show');
+        }
+
+        function calculateReverseParallelism() {
+            const parallelism = parseFloat(document.getElementById('reverseParallelism').value);
+            const surfaceLength = parseFloat(document.getElementById('reverseSurfaceLength').value);
+
+            if (isNaN(parallelism) || parallelism <= 0) {
+                alert('请输入有效的平行度偏差');
+                return;
+            }
+
+            if (isNaN(surfaceLength) || surfaceLength <= 0) {
+                alert('请输入有效的加工面长度');
+                return;
+            }
+
+            const angleRad = Math.atan(parallelism / surfaceLength);
+            const angleDeg = angleRad * 180 / Math.PI;
+
+            const deg = Math.floor(angleDeg);
+            const remainingDeg = angleDeg - deg;
+            const min = Math.floor(remainingDeg * 60);
+            const remainingMin = remainingDeg * 60 - min;
+            const sec = remainingMin * 60;
+
+            document.getElementById('reverseInput').textContent =
+                `${parallelism}mm @ ${surfaceLength}mm`;
+
+            document.getElementById('reverseAngle').textContent =
+                `${deg}°${min}′${sec.toFixed(1)}″`;
+
+            document.getElementById('reverseFormula').textContent =
+                `公式: θ = arctan(h/L) = arctan(${parallelism}/${surfaceLength})`;
+
+            document.getElementById('reverseAngleDeg').textContent =
+                `${angleDeg.toFixed(5)}°`;
+
+            document.getElementById('reverseResult').classList.add('show');
+        }
+
+        function calculateFringeParallelism() {
+            const fringeCount = parseFloat(document.getElementById('fringeCount').value);
+            const refractiveIndex = parseFloat(document.getElementById('refractiveIndex').value);
+            const apertureDiameter = parseFloat(document.getElementById('apertureDiameter').value);
+
+            if (isNaN(fringeCount) || fringeCount < 0) {
+                alert('请输入有效的干涉条纹数量');
+                return;
+            }
+
+            if (isNaN(refractiveIndex) || refractiveIndex <= 0) {
+                alert('请输入有效的折射率');
+                return;
+            }
+
+            if (isNaN(apertureDiameter) || apertureDiameter <= 0) {
+                alert('请输入有效的孔径直径');
+                return;
+            }
+
+            let wavelength = document.getElementById('fringeWavelength').value;
+            if (wavelength === 'custom') {
+                wavelength = parseFloat(document.getElementById('customFringeWavelength').value);
+                if (isNaN(wavelength) || wavelength <= 0) {
+                    alert('请输入有效的波长值');
+                    return;
+                }
+            } else {
+                wavelength = parseFloat(wavelength);
+            }
+
+            const wavelengthMm = wavelength / 1000000;
+            const angleRad = (fringeCount * wavelengthMm) / (2 * refractiveIndex * apertureDiameter);
+            const angleArcsec = angleRad * 206265;
+            const angleDeg = angleArcsec / 3600;
+
+            const deg = Math.floor(angleDeg);
+            const remainingDeg = angleDeg - deg;
+            const min = Math.floor(remainingDeg * 60);
+            const remainingMin = remainingDeg * 60 - min;
+            const sec = remainingMin * 60;
+
+            document.getElementById('fringeInput').textContent =
+                `${fringeCount}条 @ ${wavelength}nm, n=${refractiveIndex}, D=${apertureDiameter}mm`;
+
+            document.getElementById('fringeAngleRad').textContent =
+                `${angleRad.toExponential(4)} Rad`;
+
+            document.getElementById('fringeFormulaRad').textContent =
+                `公式: θ = N·λ/(2·n·D) = ${fringeCount}×${wavelengthMm.toExponential(4)}/(2×${refractiveIndex}×${apertureDiameter})`;
+
+            document.getElementById('fringeAngleArcsec').textContent =
+                `${angleArcsec.toFixed(2)}″`;
+
+            document.getElementById('fringeFormulaArcsec').textContent =
+                `换算: ${angleRad.toExponential(4)} Rad × 206265 = ${angleArcsec.toFixed(2)}″`;
+
+            document.getElementById('fringeAngleDMS').textContent =
+                `${deg}°${min}′${sec.toFixed(1)}″`;
+
+            document.getElementById('fringeResult').classList.add('show');
+        }
+
+        function findNearestFraction(value) {
+            const commonFractions = [
+                { fraction: '3', value: 3 },
+                { fraction: '2', value: 2 },
+                { fraction: '1', value: 1 },
+                { fraction: '1/2', value: 0.5 },
+                { fraction: '1/3', value: 0.3333 },
+                { fraction: '1/4', value: 0.25 },
+                { fraction: '1/5', value: 0.2 },
+                { fraction: '1/6', value: 0.1667 },
+                { fraction: '1/8', value: 0.125 },
+                { fraction: '1/10', value: 0.1 },
+                { fraction: '1/12', value: 0.0833 },
+                { fraction: '1/15', value: 0.0667 },
+                { fraction: '1/20', value: 0.05 },
+                { fraction: '1/30', value: 0.0333 },
+                { fraction: '1/40', value: 0.025 },
+                { fraction: '1/50', value: 0.02 },
+                { fraction: '1/100', value: 0.01 }
+            ];
+
+            let nearest = commonFractions[0];
+            let minDiff = Math.abs(value - nearest.value);
+
+            for (const frac of commonFractions) {
+                const diff = Math.abs(value - frac.value);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    nearest = frac;
+                }
+            }
+
+            return {
+                display: nearest.fraction,
+                value: nearest.value
+            };
+        }
+
+        function calculateUnit() {
+            const value = parseFloat(document.getElementById('unitValue').value);
+            const sourceUnit = document.getElementById('sourceUnit').value;
+            const targetUnit = document.getElementById('targetUnit').value;
+
+            if (isNaN(value) || value < 0) {
+                alert('请输入有效的数值');
+                return;
+            }
+
+            if (sourceUnit === targetUnit) {
+                alert('源单位和目标单位不能相同');
+                return;
+            }
+
+            const unitSymbols = {
+                'mm': 'mm',
+                'um': 'μm',
+                'nm': 'nm'
+            };
+
+            const unitToNm = {
+                'mm': 1e6,
+                'um': 1e3,
+                'nm': 1
+            };
+
+            const valueInNm = value * unitToNm[sourceUnit];
+            const convertedValue = valueInNm / unitToNm[targetUnit];
+
+            const unitNames = {
+                'mm': '毫米',
+                'um': '微米',
+                'nm': '纳米'
+            };
+
+            document.getElementById('unitOriginal').textContent =
+                `${value} ${unitSymbols[sourceUnit]}`;
+
+            document.getElementById('unitConverted').textContent =
+                `${convertedValue.toFixed(4)} ${unitSymbols[targetUnit]}`;
+
+            const formula = `1 ${unitSymbols[sourceUnit]} = ${unitToNm[sourceUnit] / unitToNm[targetUnit]} ${unitSymbols[targetUnit]}`;
+            document.getElementById('unitFormula').textContent = formula;
+
+            document.getElementById('unitRelation').textContent =
+                '1 mm = 1000 μm = 1,000,000 nm';
+
+            document.getElementById('unitResult').classList.add('show');
+        }
+
+        function calculateFraction() {
+            const inputValue = parseFloat(document.getElementById('fractionInput').value);
+
+            if (isNaN(inputValue) || inputValue < 0) {
+                alert('请输入有效的数值');
+                return;
+            }
+
+            const reference = findNearestFraction(inputValue);
+
+            document.getElementById('fractionInputDisplay').textContent = inputValue.toFixed(4);
+            document.getElementById('fractionDisplay').textContent = reference.display;
+            document.getElementById('fractionDetail').textContent =
+                `实际值 ${inputValue.toFixed(4)} → 参考值 ${reference.value.toFixed(4)}`;
+
+            document.getElementById('fractionResult').classList.add('show');
+        }
+    </script>
+</body>
+</html>
