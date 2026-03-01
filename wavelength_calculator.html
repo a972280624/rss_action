@@ -235,7 +235,6 @@
         <div class="tabs">
             <div class="tab active" onclick="switchTab('wavelength')">PV波长换算</div>
             <div class="tab" onclick="switchTab('parallelism')">平行度计算</div>
-            <div class="tab" onclick="switchTab('goniometer')">测角仪平行度</div>
             <div class="tab" onclick="switchTab('unit')">单位换算</div>
         </div>
 
@@ -542,66 +541,6 @@
             </div>
         </div>
 
-        <div id="goniometerTab" class="tab-content">
-            <h2 style="font-size: 18px; color: #333; margin-bottom: 20px; text-align: center;">测角仪检测窗片平行度</h2>
-
-            <div class="input-group">
-                <label for="instrumentDivision">仪器分度值（角秒/格）</label>
-                <input type="number" id="instrumentDivision" placeholder="例如: 15" step="0.1" min="0" value="15">
-                <div style="font-size: 12px; color: #888; margin-top: 5px;">测角仪目镜分划板每格对应的角度值</div>
-            </div>
-
-            <div class="input-group">
-                <label for="misalignmentGrids">错格数（格）</label>
-                <input type="number" id="misalignmentGrids" placeholder="例如: 1" step="0.1" min="0" value="1">
-                <div style="font-size: 12px; color: #888; margin-top: 5px;">两束反射像在目镜分划板上的错位格数</div>
-            </div>
-
-            <div class="input-group">
-                <label for="glassRefractiveIndex">玻璃折射率 n</label>
-                <input type="number" id="glassRefractiveIndex" placeholder="例如: 1.516" step="0.001" min="1" value="1.516">
-                <div style="font-size: 12px; color: #888; margin-top: 5px;">K9玻璃 ≈ 1.516，熔石英 ≈ 1.458</div>
-            </div>
-
-            <button class="btn" onclick="calculateGoniometer()">计算平行度</button>
-
-            <div class="result" id="goniometerResult">
-                <div class="result-item">
-                    <div class="result-label">输入参数</div>
-                    <div class="result-value" id="goniometerInput">分度值 15″/格，错格 1格，n=1.516</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">视在楔角（空气中观测角度）</div>
-                    <div class="result-value" id="apparentWedgeAngle">15″</div>
-                    <div class="result-formula" id="apparentWedgeFormula">公式: α_air = 分度值 × 错格数 = 15 × 1</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">物理楔角（真实平行度误差）</div>
-                    <div class="result-value" id="physicalWedgeAngle">4.95″</div>
-                    <div class="result-formula" id="physicalWedgeFormula">公式: α_glass = α_air / (2n) = 15 / (2×1.516)</div>
-                </div>
-                <div class="result-item">
-                    <div class="result-label">物理楔角（度分秒格式）</div>
-                    <div class="result-value" id="physicalWedgeDMS">0°0′4.95″</div>
-                </div>
-            </div>
-
-            <div class="note">
-                <strong>原理说明：</strong>
-                使用测角仪（或自准直望远镜）观察双面抛光窗片时，光线会在前后两个表面分别反射形成两个十字线像。<br><br>
-                <strong>计算公式：</strong><br>
-                1. 视在楔角：α_air = 仪器分度值 × 错格数<br>
-                2. 物理楔角：α_glass = α_air / (2n)<br><br>
-                其中：<br>
-                - α_air：视在楔角（角秒），两束反射光返回仪器时的夹角<br>
-                - α_glass：物理楔角（角秒），玻璃内部两个表面之间的真实楔角<br>
-                - n：玻璃折射率<br><br>
-                <strong>物理意义：</strong><br>
-                光线在玻璃内部传播时，折射效应会放大表观误差，因此物理楔角（真实平行度误差）比视在楔角小。<br><br>
-                <strong>注意：</strong>此公式为薄板近似公式，对于较厚的窗片，计算结果可能略有偏差。建议对精密要求使用平行平晶干涉法复验。
-            </div>
-        </div>
-
         <div id="unitTab" class="tab-content">
             <div class="input-group">
                 <label for="unitValue">输入数值</label>
@@ -699,11 +638,8 @@
             } else if (tabName === 'parallelism') {
                 tabs[1].classList.add('active');
                 document.getElementById('parallelismTab').classList.add('active');
-            } else if (tabName === 'goniometer') {
-                tabs[2].classList.add('active');
-                document.getElementById('goniometerTab').classList.add('active');
             } else if (tabName === 'unit') {
-                tabs[3].classList.add('active');
+                tabs[2].classList.add('active');
                 document.getElementById('unitTab').classList.add('active');
             }
         }
@@ -1029,62 +965,6 @@
                 `${deg}°${min}′${sec.toFixed(1)}″`;
 
             document.getElementById('fringeResult').classList.add('show');
-        }
-
-        function calculateGoniometer() {
-            const division = parseFloat(document.getElementById('instrumentDivision').value);
-            const grids = parseFloat(document.getElementById('misalignmentGrids').value);
-            const refractiveIndex = parseFloat(document.getElementById('glassRefractiveIndex').value);
-
-            if (isNaN(division) || division <= 0) {
-                alert('请输入有效的仪器分度值');
-                return;
-            }
-
-            if (isNaN(grids) || grids < 0) {
-                alert('请输入有效的错格数');
-                return;
-            }
-
-            if (isNaN(refractiveIndex) || refractiveIndex <= 0) {
-                alert('请输入有效的折射率');
-                return;
-            }
-
-            // 计算视在楔角（角秒）
-            const apparentWedgeArcsec = division * grids;
-
-            // 计算物理楔角（角秒）= 视在楔角 / (2n)
-            const physicalWedgeArcsec = apparentWedgeArcsec / (2 * refractiveIndex);
-
-            // 转换为度分秒格式
-            const physicalWedgeDeg = physicalWedgeArcsec / 3600;
-            const deg = Math.floor(physicalWedgeDeg);
-            const remainingDeg = physicalWedgeDeg - deg;
-            const min = Math.floor(remainingDeg * 60);
-            const remainingMin = remainingDeg * 60 - min;
-            const sec = remainingMin * 60;
-
-            // 更新显示
-            document.getElementById('goniometerInput').textContent =
-                `分度值 ${division}″/格，错格 ${grids}格，n=${refractiveIndex}`;
-
-            document.getElementById('apparentWedgeAngle').textContent =
-                `${apparentWedgeArcsec.toFixed(2)}″`;
-
-            document.getElementById('apparentWedgeFormula').textContent =
-                `公式: α_air = 分度值 × 错格数 = ${division} × ${grids}`;
-
-            document.getElementById('physicalWedgeAngle').textContent =
-                `${physicalWedgeArcsec.toFixed(2)}″`;
-
-            document.getElementById('physicalWedgeFormula').textContent =
-                `公式: α_glass = α_air / (2n) = ${apparentWedgeArcsec.toFixed(2)} / (2×${refractiveIndex})`;
-
-            document.getElementById('physicalWedgeDMS').textContent =
-                `${deg}°${min}′${sec.toFixed(2)}″`;
-
-            document.getElementById('goniometerResult').classList.add('show');
         }
 
         function findNearestFraction(value) {
